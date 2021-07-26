@@ -39,6 +39,50 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
     });
     
+    //slider №1
+    let current = 1,
+        previesItem = null,
+        currentItem = null;
+    
+    const next = document.querySelector(".offer__slider-next"),
+          prev = document.querySelector(".offer__slider-prev"),
+          currentItemID = document.querySelector("#current"),
+          lengthOfItems = document.querySelectorAll(".offer__slide").length,
+          slides = document.querySelectorAll(".offer__slide");
+
+    currentItemID.innerHTML=`0${current}`;
+    slides.forEach(item=> {
+        item.classList.add("hide");
+    });
+    slides[0].classList.add("fade");
+    currentItem = slides[0];
+    next.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (++current >lengthOfItems) {
+            current = 1;
+        };
+        currentItemID.innerHTML=`0${current}`;
+        previesItem = currentItem;
+        currentItem = slides[current-1];
+        previesItem.classList.remove("fade");
+        currentItem.classList.remove("hide");
+        currentItem.classList.add("fade");
+        previesItem.classList.add("hide");
+    });
+    prev.addEventListener("click",(e)=> {
+        e.preventDefault();
+        if (--current < 1) {
+            current = lengthOfItems;
+        };
+        previesItem = currentItem;
+        currentItem = slides[current-1];
+        previesItem.classList.remove("fade");
+        currentItem.classList.remove("hide");
+        currentItem.classList.add("fade");
+        previesItem.classList.add("hide");
+        currentItemID.innerHTML=`0${current}`;
+    });
+
     // Timer
 
     const deadline = '2021-07-30';
