@@ -43,13 +43,22 @@ window.addEventListener('DOMContentLoaded', function() {
     let current = 1,
         previesItem = null,
         currentItem = null;
-    
+    function changeSlides(prev,next) {
+        prev.classList.remove("fade");
+        next.classList.remove("hide");
+        next.classList.add("fade");
+        prev.classList.add("hide");
+    }
     const next = document.querySelector(".offer__slider-next"),
           prev = document.querySelector(".offer__slider-prev"),
           currentItemID = document.querySelector("#current"),
           lengthOfItems = document.querySelectorAll(".offer__slide").length,
           slides = document.querySelectorAll(".offer__slide");
 
+    document.querySelector("#total").innerHTML = lengthOfItems;
+    if (lengthOfItems < 10) {
+        document.querySelector("#total").innerHTML = `0${lengthOfItems}`;
+    }
     currentItemID.innerHTML=`0${current}`;
     slides.forEach(item=> {
         item.classList.add("hide");
@@ -60,27 +69,21 @@ window.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         if (++current >lengthOfItems) {
             current = 1;
-        };
-        currentItemID.innerHTML=`0${current}`;
+        }
+        currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;   
         previesItem = currentItem;
         currentItem = slides[current-1];
-        previesItem.classList.remove("fade");
-        currentItem.classList.remove("hide");
-        currentItem.classList.add("fade");
-        previesItem.classList.add("hide");
+        changeSlides(previesItem,currentItem);
     });
     prev.addEventListener("click",(e)=> {
         e.preventDefault();
         if (--current < 1) {
             current = lengthOfItems;
-        };
+        }
+        currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;  
         previesItem = currentItem;
         currentItem = slides[current-1];
-        previesItem.classList.remove("fade");
-        currentItem.classList.remove("hide");
-        currentItem.classList.add("fade");
-        previesItem.classList.add("hide");
-        currentItemID.innerHTML=`0${current}`;
+        changeSlides(previesItem,currentItem);
     });
 
     // Timer
