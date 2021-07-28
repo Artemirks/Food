@@ -39,52 +39,107 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
     });
     
-    //slider №1
+
     let current = 1,
         previesItem = null,
-        currentItem = null;
-    function changeSlides(prev,next) {
+        currentItem = null,
+        offset = 0, //переменная для второго слайдера, хранит значение на сколько мы отсупили
+        dots = [],
+        prevDots = null;
+    function changeSlides(prev,next) { //slider #1
         prev.classList.remove("fade");
-        next.classList.remove("hide");
+        next.classList.remove("antiFade");
         next.classList.add("fade");
-        prev.classList.add("hide");
+        prev.classList.add("antiFade");
     }
     const next = document.querySelector(".offer__slider-next"),
           prev = document.querySelector(".offer__slider-prev"),
           currentItemID = document.querySelector("#current"),
           lengthOfItems = document.querySelectorAll(".offer__slide").length,
-          slides = document.querySelectorAll(".offer__slide");
+          slides = document.querySelectorAll(".offer__slide"),
+          slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+          slidesField = document.querySelector(".offer__slider-inner"),
+          width = window.getComputedStyle(slidesWrapper).width;
 
+    slidesField.style.width = 100*lengthOfItems+"%"; //обертка для slider #2
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = "0.5s all";
+
+    slidesWrapper.style.overflow = 'hidden';
+    slides.forEach(item=> {
+        item.style.width = width;
+    });
     document.querySelector("#total").innerHTML = lengthOfItems;
     if (lengthOfItems < 10) {
         document.querySelector("#total").innerHTML = `0${lengthOfItems}`;
     }
     currentItemID.innerHTML=`0${current}`;
-    slides.forEach(item=> {
-        item.classList.add("hide");
-    });
-    slides[0].classList.add("fade");
-    currentItem = slides[0];
+    /* slides[0].classList.toggle("fade"); slider #1
+    currentItem = slides[0]; */
+
+    //dots
+
+    dotsWrapper = document.createElement('div');
+    dotsWrapper.classList.add("dotsWrapper");
+    for (i=0; i<lengthOfItems; i++) {
+        dots[i] = document.createElement('span');
+        dots[i].classList.add("sim-dots");
+        dotsWrapper.append(dots[i]);
+    }
+    slidesWrapper.append(dotsWrapper);
+    dots[0].classList.add("activeDot");
+
     next.addEventListener("click", (e) => {
         e.preventDefault();
         if (++current >lengthOfItems) {
             current = 1;
+            offset = 0;
+            dots[lengthOfItems-1].classList.toggle("activeDot");
+        } else {
+            offset += parseInt(width, 10);
+            dots[current-2].classList.toggle("activeDot");
         }
+        dots[current-1].classList.toggle("activeDot");
         currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;   
         previesItem = currentItem;
         currentItem = slides[current-1];
-        changeSlides(previesItem,currentItem);
+
+        slidesField.style.transform = `translateX(-${offset}px)`
+        //changeSlides(previesItem,currentItem);
     });
     prev.addEventListener("click",(e)=> {
         e.preventDefault();
         if (--current < 1) {
             current = lengthOfItems;
+            offset = parseInt(width, 10)*(lengthOfItems-1);
+            dots[0].classList.toggle("activeDot");
+        } else {
+            offset -= parseInt(width, 10);
+            dots[current].classList.toggle("activeDot"); 
         }
+        dots[current-1].classList.toggle("activeDot");
         currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;  
         previesItem = currentItem;
         currentItem = slides[current-1];
-        changeSlides(previesItem,currentItem);
+        slidesField.style.transform = `translateX(-${offset}px)`
+        //changeSlides(previesItem,currentItem);
     });
+
+    dots.forEach((item, i, arr)=> {
+        item.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (prevDots != null) {
+                prevDots.classList.toggle("activeDot")
+            } else {
+                arr[0].classList.toggle("activeDot");
+            }
+            prevDots = item;
+            item.classList.toggle("activeDot");
+            current = i+1;
+            currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;   
+            slidesField.style.transform = `translateX(-${(current-1)*parseInt(width,10)}px)`
+        })
+    })
 
     // Timer
 

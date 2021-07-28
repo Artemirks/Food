@@ -313,6 +313,9 @@ a {
 }
 
 .offer__slider-wrapper {
+    /*position: relative; slider #1
+    width: 650px;*/
+    position: relative;
     width: 100%;
     margin-top: 15px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, .25)
@@ -335,6 +338,8 @@ a {
 }
 
 .offer__slide {
+    /* opacity: 0; slider #1
+    position: absolute; */
     width: 100%;
     height: 390px;
 }
@@ -344,7 +349,32 @@ a {
     height: 100%;
     object-fit: cover
 }
+.dotsWrapper {
+    overflow: auto;
+    white-space: nowrap;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    text-align: center;
+}
 
+span.sim-dots {
+    width: 20px;
+    height: 20px;
+    margin: 5px 12px;
+    padding: 0;
+    display: inline-block;
+    background-color:rgba(0, 0, 0, .5);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.activeDot {
+    background-color: white !important;
+}
 .calculating {
     padding: 50px 0
 }
@@ -725,14 +755,15 @@ a {
 }
 
 .fade {
-    display: block;
+    opacity: 1;
     animation-name: fade;
-    animation-duration: 1.5s;
+    animation-duration: 1s;
 }
 
 .antiFade {
+    opacity: 0;
     animation-name: antiFade;
-    animation-duration: 1.5s; 
+    animation-duration: 1s; 
 }
 @keyframes fade {
     from {
@@ -750,7 +781,6 @@ a {
     }
 
     to {
-        display: none;
-        opacity: 0.1;
+        opacity: 0;
     }
 }
