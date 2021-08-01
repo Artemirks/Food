@@ -79,11 +79,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     //dots
 
-    dotsWrapper = document.createElement('div');
+    let dotsWrapper = document.createElement('div');
     dotsWrapper.classList.add("dotsWrapper");
-    for (i=0; i<lengthOfItems; i++) {
+    for (let i=0; i<lengthOfItems; i++) {
         dots[i] = document.createElement('span');
         dots[i].classList.add("sim-dots");
+        dots[i].id = `dotsToImg№${i+1}`;
         dotsWrapper.append(dots[i]);
     }
     slidesWrapper.append(dotsWrapper);
@@ -100,11 +101,12 @@ window.addEventListener('DOMContentLoaded', function() {
             dots[current-2].classList.toggle("activeDot");
         }
         dots[current-1].classList.toggle("activeDot");
+        prevDots = dots[current-1];
         currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;   
         previesItem = currentItem;
         currentItem = slides[current-1];
 
-        slidesField.style.transform = `translateX(-${offset}px)`
+        slidesField.style.transform = `translateX(-${offset}px)`;
         //changeSlides(previesItem,currentItem);
     });
     prev.addEventListener("click",(e)=> {
@@ -117,11 +119,12 @@ window.addEventListener('DOMContentLoaded', function() {
             offset -= parseInt(width, 10);
             dots[current].classList.toggle("activeDot"); 
         }
+        prevDots = dots[current-1];
         dots[current-1].classList.toggle("activeDot");
         currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;  
         previesItem = currentItem;
         currentItem = slides[current-1];
-        slidesField.style.transform = `translateX(-${offset}px)`
+        slidesField.style.transform = `translateX(-${offset}px)`;
         //changeSlides(previesItem,currentItem);
     });
 
@@ -129,17 +132,18 @@ window.addEventListener('DOMContentLoaded', function() {
         item.addEventListener("click", (e) => {
             e.preventDefault();
             if (prevDots != null) {
-                prevDots.classList.toggle("activeDot")
+                prevDots.classList.toggle("activeDot");
             } else {
                 arr[0].classList.toggle("activeDot");
             }
             prevDots = item;
             item.classList.toggle("activeDot");
             current = i+1;
+            offset = (current-1)*parseInt(width,10);
             currentItemID.innerHTML=`${parseInt(current / 10)}${current % 10}`;   
-            slidesField.style.transform = `translateX(-${(current-1)*parseInt(width,10)}px)`
-        })
-    })
+            slidesField.style.transform = `translateX(-${offset}px)`;
+        });
+    });
 
     // Timer
 
