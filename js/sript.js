@@ -427,4 +427,53 @@ window.addEventListener('DOMContentLoaded', function() {
     fetch('db.json')
         .then(data=>data.json())
         .then(res=>console.log(res));
+
+    //калькулятор
+
+    const result = document.querySelector(".calculating__result span");
+    let sex,height,weight,age,ratio;
+
+    
+    if (!localStorage.getItem('sex')) {
+        localStorage.setItem('sex', 'female');
+        localStorage.setItem('ratio',1.375);
+    } else {
+        document.querySelectorAll(".calculating__choose-item").forEach(item=> {
+            item.classList.remove("calculating__choose-item_active");
+        });
+        document.querySelector(`#${localStorage.getItem('sex')}`).classList.add("calculating__choose-item_active");
+        document.querySelector(`[data-ratio='${localStorage.getItem('ratio')}']`).classList.add("calculating__choose-item_active");
+    }
+
+    function calcTotal() {
+        if(!localStorage.getItem('sex') || !localStorage.getItem('height')|| !localStorage.getItem('weight') || !localStorage.getItem('age') || !localStorage.getItem('ratio')) {
+            result.textContent = "_____";
+            return;
+        }
+        if (localStorage.getItem('sex') === 'female') {
+            result.textContent = (447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio;
+        } else {
+            result.textContent = (88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio;
+        }
+    }
+    calcTotal();
+
+    function getStaticInf(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`);
+        document.querySelector(parentSelector).addEventListener('click', (e)=> {
+            if (e.target.getAttribute('data-ratio')) {
+                localStorage.setItem('ratio',e.target.getAttribute('data-ratio'));
+            } else {
+                localStorage.setItem('sex',e.target.id);
+            }
+            elements.forEach(item => {
+                item.classList.remove(activeClass);
+            });
+            console.log(ratio, sex);
+            e.target.classList.add(activeClass);
+        });
+    }  
+    getStaticInf("#gender", "calculating__choose-item_active");
+    getStaticInf(".calculating__choose_big", "calculating__choose-item_active");
+    //localStorage.clear();
 });
