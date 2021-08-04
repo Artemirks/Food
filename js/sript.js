@@ -462,14 +462,34 @@ window.addEventListener('DOMContentLoaded', function() {
     document.querySelector("#clearCalc").addEventListener("click",()=> {
         localStorage.clear();
         document.querySelector("#height").value = document.querySelector("#weight").value = document.querySelector("#age").value ='';
+        localStorage.setItem('sex', 'female');
+        localStorage.setItem('ratio',1.375);
+        document.querySelectorAll(".calculating__choose-item").forEach(item=> {
+            item.classList.remove("calculating__choose-item_active");
+        });
+        document.querySelector("#female").classList.add("calculating__choose-item_active");
+        document.querySelector("#small").classList.add("calculating__choose-item_active");
+        calcTotal();
     });
     function getDynamicInf(elementID) {
         document.querySelector(`#${elementID}`).addEventListener("input",()=> {
-            localStorage.setItem(`${elementID}`, document.querySelector(`#${elementID}`).value);
+            if (elementID === 'age' && document.querySelector(`#${elementID}`).value >=110 || elementID === 'height' && document.querySelector(`#${elementID}`).value >=230 ||
+            elementID === 'weight' && document.querySelector(`#${elementID}`).value >=500) {
+                alert("Превышено максимальное значение");
+                clearItem(elementID);
+            } else if (!(document.querySelector(`#${elementID}`).value.match(/^\d$|^\d+[\.|,]*\d+$/gm))) {
+                alert("Рост, вес, возраст - числовые значения");
+                clearItem(elementID);
+            } else {
+                localStorage.setItem(`${elementID}`, document.querySelector(`#${elementID}`).value);
+            }
             calcTotal();
         });
     }
-
+    function clearItem(elementID) {
+        document.querySelector(`#${elementID}`).value = '';
+        localStorage.removeItem(`${elementID}`)
+    }
     function getStaticInf(parentSelector, activeClass) {
         const elements = document.querySelectorAll(`${parentSelector} div`);
         document.querySelector(parentSelector).addEventListener('click', (e)=> {

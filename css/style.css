@@ -411,8 +411,22 @@ span.sim-dots {
     height: 16px;
     background: url(../icons/switch.svg) center center/cover no-repeat
 }
-
-.calculating__choose {
+#clearCalc {
+    height: 50px;
+    padding: 0 10px;
+    box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    background-color:#54ed39;
+    opacity: 0.8;
+}
+#clearCalc:hover {
+    opacity: 1;
+    transition: all 0.5s;
+}
+ .calculating__choose {
     position: relative;
     display: flex;
     margin-top: 30px;
@@ -465,11 +479,11 @@ span.sim-dots {
 }
 
 .calculating__total {
-    width: 490px;
+    width: 690px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    align-items: center
+    align-items: baseline;
 }
 
 .calculating__result {
