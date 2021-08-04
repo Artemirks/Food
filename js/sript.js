@@ -453,9 +453,9 @@ window.addEventListener('DOMContentLoaded', function() {
             return;
         }
         if (localStorage.getItem('sex') === 'female') {
-            result.textContent = (447.6 + (9.2 * localStorage.getItem('weight')) + (3.1 * localStorage.getItem('height')) - (4.3 * localStorage.getItem('age'))) * localStorage.getItem('ratio');
+            result.textContent = ((447.6 + (9.2 * localStorage.getItem('weight')) + (3.1 * localStorage.getItem('height')) - (4.3 * localStorage.getItem('age'))) * localStorage.getItem('ratio')).toFixed(2);
         } else {
-            result.textContent = (88.36 + (13.4 * localStorage.getItem('weight')) + (4.8 * localStorage.getItem('height')) - (5.7 * localStorage.getItem('age'))) * localStorage.getItem('ratio');
+            result.textContent = ((88.36 + (13.4 * localStorage.getItem('weight')) + (4.8 * localStorage.getItem('height')) - (5.7 * localStorage.getItem('age'))) * localStorage.getItem('ratio')).toFixed(2);
         }
     }
     calcTotal();
